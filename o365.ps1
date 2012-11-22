@@ -1,40 +1,40 @@
-#——– El siguiente script automatiza una conexión contra O365 ———–
+#ï¿½ï¿½ï¿½ El siguiente script automatiza una conexiï¿½n contra O365 ï¿½ï¿½ï¿½ï¿½
 	
-	#——– Previamente es necesario haber creado el fichero con el password cifrado, ———–
+	#ï¿½ï¿½ï¿½ Previamente es necesario haber creado el fichero con el password cifrado, ï¿½ï¿½ï¿½ï¿½
 		# read-host -assecurestring | convertfrom-securestring | out-file C:\securestring.txt 
 		
-	#——– Se define el usuario con el que se realizará la conexión ———–
-	$user = “tasks@tokiota.com”
+	#ï¿½ï¿½ï¿½ Se define el usuario con el que se realizarï¿½ la conexiï¿½n ï¿½ï¿½ï¿½ï¿½
+	$user = ï¿½tasks@tokiota.comï¿½
  
-    #——– Se importa el module de Microsoft Online PowerShell Module. Es necesario haberlo instalado antes ——–
+    #ï¿½ï¿½ï¿½ Se importa el module de Microsoft Online PowerShell Module. Es necesario haberlo instalado antes ï¿½ï¿½ï¿½
 	
 	Import-Module MSOnline
 	
-	#——– Se realiza  la conexión contra O365 ———–
+	#ï¿½ï¿½ï¿½ Se realiza  la conexiï¿½n contra O365 ï¿½ï¿½ï¿½ï¿½
     $pass = cat C:\securestring_tokiota.txt | convertto-securestring
     $mycreds = new-object -typename System.Management.Automation.PSCredential -argumentlist $user,$pass
 
     Connect-MsolService -Credential $mycreds
 
-    #———— Se establece una sesión remota contra Exchange Online ———————
+    #ï¿½ï¿½ï¿½ï¿½ Se establece una sesiï¿½n remota contra Exchange Online ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-    $msoExchangeURL = “https://ps.outlook.com/powershell/”
+    $msoExchangeURL = ï¿½https://ps.outlook.com/powershell/ï¿½
 
     $session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri $msoExchangeURL -Credential $mycreds -Authentication Basic -AllowRedirection
 
     Import-PSSession $session
 
-    #———— Ejecución del script ———————
+    #ï¿½ï¿½ï¿½ï¿½ Ejecuciï¿½n del script ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	cd "C:\temp\Helper Scripts o365"
-	.\GetMsolUserReport.ps1 -OutputFile Users.csv
+	.\GetMsolUserReport.ps1 -OutputFile UsersReport.csv
 	Remove-PsSession $session
 
-    # En este punto, se podrá utiliza:
+    # En este punto, se podrï¿½ utiliza:
 
     # 1] cmdlets de MSOL Powershell como por ejemplo Get-MsolUser
 
     # 2] cmdlets de Exchange Online como por ejemplo Get-Mailbox
 
-    # Al finalizar, se recomienda eliminar la sesión creada.
+    # Al finalizar, se recomienda eliminar la sesiï¿½n creada.
 		# Remove-PsSession $session
